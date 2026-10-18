@@ -19,11 +19,9 @@ from google import genai
 from dotenv import load_dotenv
 
 from bot import (
-    MAX_HISTORY,
     MODEL,
     generate_response,
     messages_to_contents,
-    trim_history,
 )
 from database import (
     init_db,
@@ -166,7 +164,13 @@ def _load_chat(chat_id: int) -> None:
     st.session_state.chat_id = chat_id
     rows = get_messages(chat_id)
     st.session_state.messages = [
-        {"role": row["role"], "content": row["content"]}
+        {
+            "role": row["role"],
+            "content": row["content"],
+            "created_at": row["created_at"],
+            "latency_ms": row.get("latency_ms", 0),
+            "tokens_used": row.get("tokens_used", 0),
+        }
         for row in rows
     ]
     st.session_state.pending_delete = None
@@ -289,9 +293,40 @@ if not st.session_state.messages:
     with st.chat_message("assistant"):
         st.markdown("Hello! What would you like to talk about?")
 
-for msg in st.session_state.messages:
+def _format_time(raw) -> str:
+    if not raw:
+        return ""
+    import datetime
+    try:
+        s = str(raw).strip()
+        if "T" in s:
+            dt = datetime.datetime.fromisoformat(s.replace("Z", "+00:00"))
+        else:
+            dt = datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
+        local_dt = dt.astimezone()
+        return local_dt.strftime("%I:%M:%S %p").lstrip("0")
+    except Exception:
+        return str(raw)
+
+
+for i, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
+        ts = _format_time(msg.get("created_at"))
+        if msg["role"] == "user":
+            latency = msg.get("latency_ms", 0)
+            if not latency and i + 1 < len(st.session_state.messages) and st.session_state.messages[i + 1]["role"] == "assistant":
+                latency = st.session_state.messages[i + 1].get("latency_ms", 0)
+            dur_str = f" · Took {latency / 1000:.2f}s" if latency > 0 else ""
+            if ts:
+                st.caption(f"{ts}{dur_str}")
+        else:
+            latency = msg.get("latency_ms", 0)
+            dur_str = f" · Took {latency / 1000:.2f}s ({latency} ms)" if latency > 0 else ""
+            tokens = msg.get("tokens_used", 0)
+            tok_str = f" · {tokens} tokens" if tokens > 0 else ""
+            if ts or dur_str:
+                st.caption(f"{ts}{dur_str}{tok_str}")
 
 # ── Chat input ───────────────────────────────────────────────────────────────
 
@@ -302,11 +337,19 @@ if prompt:
         st.stop()
 
     # 1. Show & persist the user message
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    save_message(st.session_state.chat_id, "user", prompt)
+    user_res = save_message(st.session_state.chat_id, "user", prompt)
+    user_msg_data = {
+        "role": "user",
+        "content": prompt,
+        "created_at": getattr(user_res, "created_at", None),
+    }
+    st.session_state.messages.append(user_msg_data)
 
     with st.chat_message("user"):
         st.markdown(prompt)
+        ts = _format_time(user_msg_data.get("created_at"))
+        if ts:
+            st.caption(f"{ts} · Processing...")
 
     # 2. Auto-title on the first user message
     user_msgs = [m for m in st.session_state.messages if m["role"] == "user"]
@@ -317,19 +360,34 @@ if prompt:
     with st.chat_message("assistant"):
         try:
             with st.spinner("Thinking..."):
-                context = trim_history(st.session_state.messages, MAX_HISTORY)
-                response_text = generate_response(
+                context = st.session_state.messages
+                res = generate_response(
                     messages_to_contents(context),
                     client=genai.Client(),
                 )
+                if isinstance(res, tuple):
+                    response_text, latency_ms, tokens_used = res
+                else:
+                    response_text, latency_ms, tokens_used = res, 0, 0
 
             st.markdown(response_text)
 
             # 4. Persist the assistant response
+            bot_res = save_message(st.session_state.chat_id, "assistant", response_text, latency_ms, tokens_used)
             st.session_state.messages.append(
-                {"role": "assistant", "content": response_text}
+                {
+                    "role": "assistant",
+                    "content": response_text,
+                    "latency_ms": latency_ms,
+                    "tokens_used": tokens_used,
+                    "created_at": getattr(bot_res, "created_at", None),
+                }
             )
-            save_message(st.session_state.chat_id, "assistant", response_text)
+            dur_str = f" · Took {latency_ms / 1000:.2f}s ({latency_ms} ms)" if latency_ms > 0 else ""
+            tok_str = f" · {tokens_used} tokens" if tokens_used > 0 else ""
+            ts = _format_time(getattr(bot_res, "created_at", None))
+            if ts or dur_str:
+                st.caption(f"{ts}{dur_str}{tok_str}")
 
         except Exception as err:
             st.error(

@@ -20,11 +20,18 @@
   gap: 0.5rem;
   color: var(--text-faint);
   padding: 2rem;
+  text-align: center;
 }
 .emptyIcon {
-  font-size: 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
-  opacity: 0.3;
 }
 .emptyTitle {
   font-size: 1rem;
@@ -33,6 +40,8 @@
 }
 .emptySub {
   font-size: 0.85rem;
+  max-width: 440px;
+  line-height: 1.5;
 }
 
 /* ── Message row ── */
@@ -53,18 +62,18 @@
 /* ── Avatar ── */
 .avatar {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--bg-sidebar);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-muted);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 .userAvatar {
   background: var(--accent);
@@ -72,10 +81,19 @@
   border-color: var(--accent);
 }
 
+.bubbleWrapper {
+  max-width: 76%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.userWrapper {
+  align-items: flex-end;
+}
+
 /* ── Bubble ── */
 .bubble {
-  max-width: 72%;
-  padding: 0.65rem 0.9rem;
+  padding: 0.65rem 0.95rem;
   border-radius: var(--radius);
   line-height: 1.6;
 }
@@ -134,6 +152,90 @@
   border-radius: 4px;
   font-family: 'Fira Code', 'Cascadia Code', monospace;
   font-size: 0.85em;
+}
+
+/* ── Metrics and Feedback metadata row ── */
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.metaLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.userMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.separator {
+  color: var(--border);
+  user-select: none;
+}
+
+.timestamp {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+}
+
+.promptDuration {
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.promptPending {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.metrics {
+  font-family: var(--font);
+  letter-spacing: 0.01em;
+}
+
+.feedbackControls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.feedbackBtn {
+  background: transparent;
+  color: var(--text-faint);
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+.feedbackBtn:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--bg-subtle);
+}
+.feedbackBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.feedbackConfirmed {
+  font-size: 0.7rem;
+  color: #2b7a4b;
+  font-weight: 500;
 }
 
 /* ── Typing indicator ── */

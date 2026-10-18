@@ -1,0 +1,150 @@
+================================================================================
+CAMPUS PLACEMENT CELL - OFFICIAL KNOWLEDGE BASE AND POLICY MANUAL
+================================================================================
+Academic Year: 2026-2027
+Department: Department of Training and Placement
+Contact Email: placement@college.edu
+Office Location: Placement Cell, Ground Floor, Administrative Block, Main Campus
+Working Hours: Monday to Friday, 09:00 AM to 05:00 PM; Saturday, 09:00 AM to 01:00 PM
+
+--------------------------------------------------------------------------------
+SECTION 1: OVERVIEW AND MANDATORY DISCLAIMER
+--------------------------------------------------------------------------------
+The Training and Placement Cell facilitates corporate interaction, conducts 
+campus recruitment drives, and organizes career skill training programs.
+
+IMPORTANT POLICY DISCLAIMER:
+The Placement Cell acts as a facilitator connecting registered students with 
+prospective corporate recruiters. The Placement Cell does NOT guarantee job 
+offers or predict selection outcomes. Final candidate selection, compensation 
+structures, job designations, and joining terms are strictly at the sole discretion 
+of the recruiting organization. No candidate is guaranteed placement.
+
+--------------------------------------------------------------------------------
+SECTION 2: STUDENT ELIGIBILITY CRITERIA
+--------------------------------------------------------------------------------
+2.1 Minimum Academic Benchmarks:
+- Standard Minimum CGPA: Minimum aggregate CGPA of 6.00 across all completed semesters 
+  without active academic backlogs, unless a company specifies higher requirements.
+- Tier 1 Super Dream Criteria: Typically requires a minimum CGPA of 8.00 or higher, 
+  with no historical backlogs.
+- Tier 1 Dream Criteria: Typically requires a minimum CGPA of 7.00 or higher.
+- Tier 2 Core / Mass Criteria: Typically requires a minimum CGPA of 6.00 or 6.50.
+- Class 10 and Class 12 / Diploma Requirements: Many recruiters mandate 60.0% or 65.0% 
+  minimum aggregate in 10th and 12th/Diploma examinations.
+
+2.2 Backlog Policy:
+- Active Backlogs: Students with active (standing) backlogs at the start of a drive 
+  are ineligible for Tier 1 drives. Certain Tier 2 companies may permit candidates with 
+  at most [ALLOWED_BACKLOG_COUNT_TIER2: currently 0 to 1 active backlog, subject to 
+  specific company criteria].
+- Historical Backlogs (Cleared Backlogs): Cleared backlogs are accepted by select 
+  recruiters, but top-tier firms mandate an unblemished academic track record with 
+  zero history of backlogs.
+- Verification: Academic records are verified via the Controller of Examinations. 
+  Misrepresentation leads to immediate debarment.
+
+2.3 Attendance Requirements:
+- Placement Readiness Training (PRT) Attendance: Mandatory minimum 85% attendance across 
+  all placement preparation modules, including technical bootcamps and aptitude tests.
+- General Academic Attendance: Students must satisfy the college mandate of at least 75% 
+  regular academic attendance to be eligible for placement drive clearance.
+- Pre-Placement Talks (PPT): Attendance is mandatory for every registered candidate for 
+  that specific drive. Absence from a PPT without prior approved leave results in 
+  disqualification from that company's drive.
+
+--------------------------------------------------------------------------------
+SECTION 3: COMPANY CATEGORIZATION AND OFFER REGULATIONS
+--------------------------------------------------------------------------------
+Companies visiting the institution are classified into distinct tiers based on 
+Cost to Company (CTC) packages:
+
+3.1 Tier Classification:
+- Tier 1 - Super Dream Offer: CTC of [TIER1_SUPER_DREAM_THRESHOLD: INR 12.0 LPA and above].
+- Tier 1 - Dream Offer: CTC between [TIER1_DREAM_RANGE: INR 6.5 LPA to INR 11.99 LPA].
+- Tier 2 - Core / Regular Placement: CTC up to [TIER2_REGULAR_CEILING: below INR 6.5 LPA].
+
+3.2 Multiple Offer and Dream Option Regulations:
+- One Student, One Regular Offer Rule: When a student secures an offer from a Tier 2 company, 
+  they are excluded from attending further Tier 2 recruitment drives.
+- Upgrade Rule (Dream / Super Dream Option):
+  * A student holding a Tier 2 offer is permitted to participate in Tier 1 Dream or Super Dream 
+    drives until they secure one upgraded offer.
+  * A student holding a Tier 1 Dream offer is eligible only for Tier 1 Super Dream drives 
+    offering at least [SUPER_DREAM_DELTA: 1.5x higher CTC than current offer].
+  * Once a student secures a Tier 1 Super Dream offer, they are placed in the "Fully Placed" 
+    category and become ineligible for any subsequent campus drives.
+- Offer Acceptance Timeline: Students issued an offer letter must submit their written 
+  acceptance or rejection via the Placement Portal within [OFFER_ACCEPTANCE_DAYS: 3 working days]. 
+  Failure to reply within this window is deemed an automatic acceptance.
+
+--------------------------------------------------------------------------------
+SECTION 4: RECRUITMENT DRIVE PROCEDURES AND WORKFLOW
+--------------------------------------------------------------------------------
+Recruitment drives follow a strictly monitored 5-stage workflow:
+
+Stage 1: Notification and Student Registration
+- Drive notification published via the college Placement Portal and official email.
+- Registration window: Open for a designated period (typically [REGISTRATION_WINDOW_HOURS: 24 to 48 hours]). 
+  Late registrations will not be entertained under any circumstance.
+- Willingness Submission: Clicking "Register" constitutes a binding commitment to participate 
+  in all selection rounds.
+
+Stage 2: Pre-Placement Talk (PPT)
+- Recruiter presents company profile, job role, compensation details, service agreement/bonds, 
+  and work location.
+- Clarifications regarding job roles and company expectations must be asked during this session.
+
+Stage 3: Online Assessment / Screening Rounds
+- Formats: Quantitative aptitude, logical reasoning, verbal ability, and technical domain coding.
+- Environment: Proctored computer labs or supervised remote assessments.
+- Zero-Tolerance Malpractice: Any form of cheating or tab switching leads to immediate permanent 
+  debarment from all campus placement activities.
+
+Stage 4: Technical Interviews
+- Round Structure: One to two technical rounds assessing data structures, algorithms, 
+  system architecture, core engineering subjects, final year projects, and internships.
+- Preparation: Students must bring 3 updated physical copies of their verified resume and college ID.
+
+Stage 5: HR and Managerial Interviews
+- Evaluates communication skills, cultural fit, willingness to relocate, and flexibility in shifts.
+- Discussion of documentation, background check requirements, and joining timelines.
+
+Stage 6: Final Results and Debriefing
+- The recruiter shares the shortlist with the Placement Officer.
+- Selected candidates receive official offer communications via the Placement Office.
+
+--------------------------------------------------------------------------------
+SECTION 5: CODE OF CONDUCT AND DISCIPLINARY ACTIONS
+--------------------------------------------------------------------------------
+5.1 Mandatory Professional Dress Code:
+- Formal attire is mandatory for all placement activities:
+  * Male Candidates: Formal plain shirt, dark formal trousers, formal leather shoes, and tie.
+  * Female Candidates: Formal plain salwar suit / formal shirt and trousers with formal footwear.
+- College identity card must be displayed at all times.
+
+5.2 Absence and Blacklisting Policy:
+- Dropping out of a drive after clearing the assessment or PPT without an approved medical 
+  emergency results in debarment for the next [DEBARMENT_DRIVE_COUNT: 3 consecutive campus drives].
+- Insubordination or unprofessional behaviour during an interview leads to complete cancellation 
+  of placement registration for the academic year.
+
+--------------------------------------------------------------------------------
+SECTION 6: TRAINING AND PREPARATION GUIDELINES
+--------------------------------------------------------------------------------
+- Aptitude Preparation: Focus on speed math, quantitative techniques, logical deductions, 
+  and reading comprehension.
+- Technical Coding: Recommended platforms include LeetCode, HackerRank, and GeeksforGeeks. 
+  Key topics: Arrays, Linked Lists, Trees, Dynamic Programming, SQL, and Object-Oriented Design.
+- Resume Guidelines: Maximum 1 page, reverse chronological order, validated project links, 
+  and no inflated or unverified claims.
+- Mock Interviews: The Placement Cell arranges peer and alumni mock sessions every semester.
+
+--------------------------------------------------------------------------------
+SECTION 7: ESCALATION AND OFFICIAL ASSISTANCE
+--------------------------------------------------------------------------------
+For individual profile discrepancies, special permission requests, or drive schedule conflicts:
+- Email: placement@college.edu
+- Office: Placement Cell, Ground Floor, Administrative Block
+- Head of Training and Placement: [PLACEMENT_HEAD_NAME: Prof. Placement Officer]
+================================================================================

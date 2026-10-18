@@ -23,14 +23,36 @@
   min-height: 52px;
   background: var(--bg);
 }
-.chatTitle {
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+
+.brandTitle {
   font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text);
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.headerSeparator {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+.chatTitle {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .apiWarning {
   font-size: 0.75rem;
   color: var(--danger);
@@ -45,27 +67,45 @@
   justify-content: center;
   padding: 2rem;
 }
+
 .welcomeInner {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  max-width: 380px;
+  gap: 0.85rem;
+  max-width: 500px;
 }
+
+.welcomeBadge {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 .welcomeInner h1 {
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: -0.03em;
 }
-.welcomeInner p {
-  font-size: 0.9rem;
+
+.welcomeBanner {
+  font-size: 0.92rem;
   color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
 }
+
 .welcomeBtn {
-  margin-top: 0.5rem;
-  padding: 0.6rem 1.4rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem 1.5rem;
   background: var(--accent);
   color: #fff;
   border-radius: var(--radius-sm);
@@ -87,6 +127,7 @@
   color: var(--danger);
   font-size: 0.85rem;
 }
+
 .errorClose {
   flex-shrink: 0;
   background: transparent;

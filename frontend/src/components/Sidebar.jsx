@@ -4,12 +4,12 @@ export default function Sidebar({ chats, activeChatId, onNew, onSelect, onDelete
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
-        <span className={styles.brandName}>Son of Anton</span>
-        <span className={styles.brandSub}>Gemini AI</span>
+        <span className={styles.brandName}>Placement Cell</span>
+        <span className={styles.brandSub}>Virtual Assistant</span>
       </div>
 
       <button className={styles.newBtn} onClick={onNew}>
-        New Chat
+        New Inquiry
       </button>
 
       <div className={styles.listLabel}>
@@ -34,7 +34,7 @@ export default function Sidebar({ chats, activeChatId, onNew, onSelect, onDelete
 function ChatItem({ chat, active, onSelect, onDelete }) {
   function handleDelete(e) {
     e.stopPropagation()
-    if (window.confirm(`Delete "${chat.title}"?\n\nThis will permanently remove the conversation and all its messages.`)) {
+    if (window.confirm(`Delete "${chat.title}"?\n\nThis will permanently remove the conversation record.`)) {
       onDelete(chat.id)
     }
   }
@@ -51,8 +51,8 @@ function ChatItem({ chat, active, onSelect, onDelete }) {
       <button
         className={styles.deleteBtn}
         onClick={handleDelete}
-        title="Delete chat"
-        aria-label="Delete chat"
+        title="Delete inquiry"
+        aria-label="Delete inquiry"
       >
         &#x2715;
       </button>

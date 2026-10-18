@@ -175,7 +175,28 @@ def test_save_message_returns_id():
         cid = db.create_chat()
         mid = db.save_message(cid, "user", "test")
         assert isinstance(mid, int) and mid > 0
+        assert getattr(mid, "created_at", None) is not None, "Message created_at should be populated"
         print("PASS test_save_message_returns_id")
+    finally:
+        _teardown(path)
+
+
+def test_save_exchange_returns_timestamps():
+    path = _setup()
+    try:
+        cid = db.create_chat("Exchange Test")
+        res = db.save_exchange(cid, "Hello prompt", "Hello answer", latency_ms=150, tokens_used=30)
+        assert isinstance(res, int) and res > 0
+        assert getattr(res, "created_at", None) is not None, "Assistant timestamp should be present"
+        assert getattr(res, "user_created_at", None) is not None, "User timestamp should be present"
+        assert getattr(res, "user_msg_id", 0) > 0, "User message ID should be present"
+        msgs = db.get_messages(cid)
+        assert len(msgs) == 2
+        assert msgs[0]["created_at"] is not None
+        assert msgs[1]["created_at"] is not None
+        assert msgs[1]["latency_ms"] == 150
+        assert msgs[1]["tokens_used"] == 30
+        print("PASS test_save_exchange_returns_timestamps")
     finally:
         _teardown(path)
 
@@ -196,6 +217,7 @@ if __name__ == "__main__":
         test_empty_database,
         test_messages_isolated_between_chats,
         test_save_message_returns_id,
+        test_save_exchange_returns_timestamps,
     ]
 
     passed = 0

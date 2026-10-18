@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from './components/Sidebar.jsx'
 import MessageList from './components/MessageList.jsx'
 import ChatInput from './components/ChatInput.jsx'
@@ -13,11 +13,11 @@ export default function App() {
   const [error, setError] = useState(null)
   const [apiStatus, setApiStatus] = useState(null)
 
-  // ── Load status & chat list on mount ──────────────────────────────────
+  // Load status & chat list on mount
   useEffect(() => {
     api.status()
       .then(setApiStatus)
-      .catch(() => setError('Could not connect to the chatbot backend.'))
+      .catch(() => setError('Could not connect to the backend service.'))
     loadChats()
   }, [])
 
@@ -25,37 +25,37 @@ export default function App() {
     try {
       const data = await api.getChats()
       setChats(data)
-    } catch (e) {
+    } catch {
       setError('Could not load conversations.')
     }
   }
 
-  // ── Select a chat ──────────────────────────────────────────────────────
+  // Select a chat
   async function handleSelect(chatId) {
     setActiveChatId(chatId)
     setError(null)
     try {
       const msgs = await api.getMessages(chatId)
-      setMessages(msgs.map(m => ({ role: m.role, content: m.content })))
+      setMessages(msgs)
     } catch {
       setError('Could not load messages.')
     }
   }
 
-  // ── Create a new chat ──────────────────────────────────────────────────
+  // Create a new chat
   async function handleNew() {
     setError(null)
     try {
-      const chat = await api.createChat()
+      const chat = await api.createChat('New Inquiry')
       setMessages([])
       setActiveChatId(chat.id)
       await loadChats()
     } catch {
-      setError('Could not create a new chat.')
+      setError('Could not create a new inquiry session.')
     }
   }
 
-  // ── Delete a chat ──────────────────────────────────────────────────────
+  // Delete a chat
   async function handleDelete(chatId) {
     try {
       await api.deleteChat(chatId)
@@ -65,29 +65,54 @@ export default function App() {
       }
       await loadChats()
     } catch {
-      setError('Could not delete the chat.')
+      setError('Could not delete the inquiry.')
     }
   }
 
-  // ── Send a message ─────────────────────────────────────────────────────
+  // Send a message
   async function handleSend(content) {
     if (!activeChatId || loading) return
     setError(null)
 
-    // Optimistically show user message
-    const userMsg = { role: 'user', content }
-    setMessages(prev => [...prev, userMsg])
+    // Optimistically show user message with current client timestamp
+    const clientTimestamp = new Date().toISOString()
+    const tempUserMsg = {
+      role: 'user',
+      content,
+      created_at: clientTimestamp,
+    }
+    setMessages(prev => [...prev, tempUserMsg])
     setLoading(true)
 
     try {
       const response = await api.sendMessage(activeChatId, content)
-      setMessages(prev => [...prev, { role: 'assistant', content: response.content }])
-      // Refresh sidebar so the auto-generated title appears
+      setMessages(prev => {
+        const updated = [...prev]
+        const lastIdx = updated.length - 1
+        if (lastIdx >= 0 && updated[lastIdx].role === 'user') {
+          updated[lastIdx] = {
+            ...updated[lastIdx],
+            id: response.user_message_id || updated[lastIdx].id,
+            created_at: response.user_created_at || updated[lastIdx].created_at || clientTimestamp,
+            latency_ms: response.latency_ms,
+          }
+        }
+        return [
+          ...updated,
+          {
+            id: response.id,
+            role: 'assistant',
+            content: response.content,
+            latency_ms: response.latency_ms,
+            tokens_used: response.tokens_used,
+            created_at: response.created_at || new Date().toISOString(),
+          },
+        ]
+      })
       await loadChats()
       return true
     } catch (e) {
-      setError(e.message || 'Something went wrong. Please try again.')
-      // Remove the optimistic user message so they can retry
+      setError(e.message || 'Inquiry processing failed. Please try again.')
       setMessages(prev => prev.slice(0, -1))
       return false
     } finally {
@@ -95,9 +120,18 @@ export default function App() {
     }
   }
 
-  // ── Active chat title for the header ──────────────────────────────────
+  // Submit feedback
+  async function handleFeedback(messageId, rating) {
+    try {
+      await api.submitFeedback(messageId, rating)
+    } catch (e) {
+      console.error('Feedback submission failed:', e)
+      throw e
+    }
+  }
+
   const activeChat = chats.find(c => c.id === activeChatId)
-  const chatTitle = activeChat?.title || 'New Chat'
+  const chatTitle = activeChat?.title || 'Placement Inquiry'
 
   return (
     <div className={styles.layout}>
@@ -112,22 +146,22 @@ export default function App() {
       <div className={styles.main}>
         {/* Header */}
         <header className={styles.header}>
-          {activeChatId ? (
-            <span className={styles.chatTitle}>{chatTitle}</span>
-          ) : (
-            <span className={styles.chatTitle}>Son of Anton</span>
-          )}
+          <div className={styles.headerLeft}>
+            <span className={styles.brandTitle}>Placement Cell Virtual Assistant</span>
+            {activeChatId && <span className={styles.headerSeparator}>/</span>}
+            {activeChatId && <span className={styles.chatTitle}>{chatTitle}</span>}
+          </div>
           {apiStatus && !apiStatus.api_configured && (
             <span className={styles.apiWarning}>
-              API key missing — add GEMINI_API_KEY to .env
+              API key missing in environment
             </span>
           )}
         </header>
 
         {error && (
           <div className={styles.error} role="alert">
-            {error}
-            <button onClick={() => setError(null)} className={styles.errorClose} aria-label="Dismiss error">
+            <span>{error}</span>
+            <button onClick={() => setError(null)} className={styles.errorClose} aria-label="Dismiss">
               &#x2715;
             </button>
           </div>
@@ -137,16 +171,23 @@ export default function App() {
         {!activeChatId ? (
           <div className={styles.welcome}>
             <div className={styles.welcomeInner}>
-              <h1>Son of Anton</h1>
-              <p>Conversational AI powered by Google Gemini.</p>
+              <div className={styles.welcomeBadge}>Official Placement Desk</div>
+              <h1>Placement Cell Virtual Assistant</h1>
+              <p className={styles.welcomeBanner}>
+                Inquire about recruitment drives, company eligibility criteria, interview preparation, and placement policies.
+              </p>
               <button className={styles.welcomeBtn} onClick={handleNew}>
-                Start a new conversation
+                Start New Inquiry
               </button>
             </div>
           </div>
         ) : (
           <>
-            <MessageList messages={messages} loading={loading} />
+            <MessageList
+              messages={messages}
+              loading={loading}
+              onFeedback={handleFeedback}
+            />
             <ChatInput onSend={handleSend} disabled={loading} />
           </>
         )}
